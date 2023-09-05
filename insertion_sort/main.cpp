@@ -15,23 +15,26 @@ return 0;
 #include <bits/stdc++.h>
 using namespace std;
 // insertion sort
-int* insertion_sort (int arr[], int number_of_elements)
+int* insertion_sort(int arr[], int number_of_elements)
 {
+    int* sorted_arr = new int[number_of_elements];
+    for (int index = 0; index < number_of_elements; index++) {
+        sorted_arr[index] = arr[index];
+    }
+
     for (int index = 1; index < number_of_elements; index++) {
-        int value_at_index = arr[ index ];
+        int value_at_index = sorted_arr[index];
         int second_index = index - 1;
-    // Move elements of arr[0..i-1],
-    // that are greater than value_at_index,
-    // to one position ahead of their
-    // current position
-        while (second_index >= 0 && arr[ second_index ] > value_at_index){
-            arr[ second_index + 1 ] = arr[ second_index ];
-            second_index --;
+
+        while (second_index >= 0 && sorted_arr[second_index] > value_at_index) {
+            sorted_arr[second_index + 1] = sorted_arr[second_index];
+            second_index--;
         }
-        arr[ second_index + 1 ] = value_at_index;
+        sorted_arr[second_index + 1] = value_at_index;
+    }
+    return sorted_arr;
 }
-    return arr;
-}
+
 // Function to print array. Array is called by reference
 void print_array (int arr[], int number_of_elements)
 {
