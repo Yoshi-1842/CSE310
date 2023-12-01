@@ -48,10 +48,9 @@ bool Graph::loadGraph(const string& filename, const string& direction) {
         numVertices = n + 1;
         numEdges = m;
 
-        // Allocate memory for adjacencyLists
         adjacencyLists = new Edge*[numVertices];
         for (int i = 0; i < numVertices; ++i) {
-            adjacencyLists[i] = nullptr;
+            adjacencyLists[i] = nullptr; // Initialize to nullptr
         }
 
         // Allocate memory for extractedVertices, relaxedVertices, predecessor, and distance
@@ -83,72 +82,48 @@ bool Graph::loadGraph(const string& filename, const string& direction) {
     getline(file, line);
 
     // Loop through the remaining lines to read edges and build adjacency lists
-    while (getline(file, line)) {
-        int edgeId, startNode, endNode;
-        double weight;
-        istringstream iss(line);
+while (getline(file, line)) {
+    int edgeId, startNode, endNode;
+    double weight;
+    istringstream iss(line);
 
-        // Parse the line to get edge information
-        if (iss >> edgeId >> startNode >> endNode >> weight) {
-            startNode++;
-            endNode++;
+    // Parse the line to get edge information
+    if (iss >> edgeId >> startNode >> endNode >> weight) {
+        startNode++;
+        endNode++;
 
-            // Check if node IDs are valid
-            if (startNode > numVertices || endNode > numVertices || startNode < 1 || endNode < 1) {
-                cerr << "Invalid node IDs in the input file." << endl;
-                return false;
-            }
-
-            // Create a new edge
-            Edge* edge = new Edge;
-            edge->destination = endNode;
-            edge->weight = weight;
-
-            // Add edge to the adjacency list
-            if (adjacencyLists[startNode] == nullptr) {
-                adjacencyLists[startNode] = new Edge[numEdges];
-            }
-
-            int j = 0;
-            // Find the next available slot in the adjacency list
-            while (adjacencyLists[startNode][j].destination != 0) {
-                j++;
-            }
-
-            // Add the edge to the list
-            adjacencyLists[startNode][j] = *edge;
-
-            // If the graph is undirected, add the reverse edge
-            if (direction == "undirected") {
-                Edge* reverseEdge = new Edge;
-                reverseEdge->destination = startNode;
-                reverseEdge->weight = weight;
-
-                if (adjacencyLists[endNode] == nullptr) {
-                    adjacencyLists[endNode] = new Edge[numEdges];
-                }
-
-                j = 0;
-                // Find the next available slot in the adjacency list
-                while (adjacencyLists[endNode][j].destination != 0) {
-                    j++;
-                }
-
-                // Add the reverse edge to the list
-                adjacencyLists[endNode][j] = *reverseEdge;
-
-                // Deallocate memory for the reverse edge
-                delete reverseEdge;
-            }
-
-            // Deallocate memory for the edge
-            delete edge;
-        } else {
-            cerr << "Invalid format for edge in the input file." << endl;
+        // Check if node IDs are valid
+        if (startNode > numVertices || endNode > numVertices || startNode < 1 || endNode < 1) {
+            cerr << "Invalid node IDs in the input file." << endl;
             return false;
         }
-    }
 
+        // Create a new edge
+        Edge* edge = new Edge;
+        edge->destination = endNode;
+        edge->weight = weight;
+
+        // Add edge to the adjacency list
+        if (adjacencyLists[startNode] == nullptr) {
+            adjacencyLists[startNode] = new Edge[numEdges](); // Initialize to zero
+        }
+
+        // Find the next available slot in the adjacency list
+        int j = 0;
+        while (adjacencyLists[startNode][j].destination != 0) {
+            j++;
+        }
+
+        // Add the edge to the list
+        adjacencyLists[startNode][j] = *edge;
+
+        // Deallocate memory for the edge
+        delete edge;
+    } else {
+        cerr << "Invalid format for edge in the input file." << endl;
+        return false;
+    }
+}
     // Set the graph direction
     isDirected = (direction == "directed");
 
