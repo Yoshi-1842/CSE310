@@ -7,8 +7,15 @@ const double DOUBLE_MAX = 99999999.0;
 Graph::Graph() {
     // Constructor implementation
     // set pointers to nullptr
+    adjacencyLists = nullptr;
+    extractedVertices = nullptr;
+    relaxedVertices = nullptr;
+    predecessor = nullptr;
+    distance = nullptr;
     // set variables to default values
-    // Initialize numVertices, numEdges, and isDirected
+    numVertices = 0;
+    numEdges = 0;
+    isDirected = false;
 }
 
 Graph::~Graph() {

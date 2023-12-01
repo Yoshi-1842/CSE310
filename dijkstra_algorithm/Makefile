@@ -35,7 +35,6 @@ $(EXECUTABLE): $(OBJECTS)
 # Compiling source files into object files
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
-
 # Clean rule
 clean:
 	rm -f $(EXECUTABLE) $(OBJECTS)
