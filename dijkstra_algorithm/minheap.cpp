@@ -11,8 +11,8 @@ MinHeap::MinHeap() {
 
 void MinHeap::init(int newSize) {
     // Set capacity and size
-    capacity = newSize;
-    size = 0;
+    capacity = newSize +1;
+    this->size = 0;
 
     // Allocate memory for keys (weights) and values (nodes)
     keys = new double[capacity];
@@ -21,20 +21,21 @@ void MinHeap::init(int newSize) {
 
 void MinHeap::push(double key, int value) {
     // If the heap is full
-    if (size == capacity) {
+    if (size >= capacity) {
         return;
     }
-
     // Increase size
     size++;
 
-    // Set key and value at the end with the index as size
-    keys[size] = key;
-    values[size] = value;
+    // Set key and value at the end with the index as size - 1
+    int index = size - 1;
+    keys[index] = key;
+    values[index] = value;
 
     // Heapify up
-    heapifyUp(size);
+    heapifyUp(size - 1);
 }
+
 
 int MinHeap::pop() {
     // If the heap is empty
@@ -45,14 +46,11 @@ int MinHeap::pop() {
 
     // Get root value
     int rootValue = values[1];
-
     // Replace root with the last element
-    values[1] = values[size];
     keys[1] = keys[size];
-
+    values[1] = values[size];
     // Decrease size
     size--;
-
     // Heapify down
     heapifyDown(1);
 
@@ -69,7 +67,6 @@ void MinHeap::heapifyUp(int index) {
     while (index > 1 && keys[index] < keys[index / 2]) {
         // Swap index with parent
         swap(index, index / 2);
-
         // Update index to parent
         index = index / 2;
     }
@@ -77,11 +74,13 @@ void MinHeap::heapifyUp(int index) {
 
 void MinHeap::heapifyDown(int index) {
     // Find the smallest child from left (2*index) or right (2*index+1) child of index
+    int smallest = index;
+    int leftChild = smallest * 2;
+    int rightChild = smallest * 2 + 1;
     int smallestChild = index * 2;
-    
 
-    if (smallestChild + 1 <= size && keys[smallestChild + 1] < keys[smallestChild]) {
-        smallestChild = smallestChild + 1;
+    if (leftChild <= size && keys[rightChild] < keys[leftChild]) {
+        smallestChild = rightChild;
     }
 
     // If the smallest child is smaller than the current key
@@ -96,6 +95,7 @@ void MinHeap::heapifyDown(int index) {
         heapifyDown(index);
     }
 }
+
 
 void MinHeap::swap(int i, int j) {
     // Swap keys and values at positions i and j
