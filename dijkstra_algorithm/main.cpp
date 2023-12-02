@@ -7,42 +7,39 @@ using namespace std;
 int main(int argc, char* argv[]) {
     // Command-line argument validation
     if (argc < 3) {
-        cerr << "Usage: " << argv[0] << " <graph_filename> <direction>" << endl;
-        return EXIT_FAILURE;
+        cout << "Usage: " << argv[0] << " <graph_filename> <direction>" << endl;
+        return 1;
     }
     
     // Extract graph filename and direction from command-line arguments
-    char* graphFilename = argv[1];
-    char* direction = argv[2];
+    string graphFilename = argv[1];
+    string direction = argv[2];
 
     // Create an instance of the Graph class
-    Graph graph;
+    Graph* graph = new Graph();
 
     // Load the graph from the specified file
-    if (!graph.loadGraph(graphFilename, direction)) {
-        cerr << "Failed to load the graph from file: " << graphFilename << endl;
-        return EXIT_FAILURE;
+    if (!graph->loadGraph(graphFilename, direction)) {
+        cout << "Failed to load the graph from file: "  << endl;
+        return 1;
     }
 
     while (true) {
-        string query, source, destination, flag, action;
-        cout << "Enter a query: ";
-        cin >> query >> source >> destination >> flag >> action;
-
+        string query;
+        cin>> query;
+        int source;
+        int destination;
+        int flag;
+        string action;
         if (query == "find") {
-            try {
-                graph.runDijkstra(stoi(source), stoi(destination), stoi(flag));
-            } catch (const invalid_argument& e) {
-                cerr << "Invalid input for find query. Please enter valid integers." << endl;
-            }
+            cin >> source >> destination >>flag;
+            graph->runDijkstra(source,destination,flag);
         } else if (query == "write") {
-            try {
-                graph.writePath(stoi(source), stoi(destination));
-            } catch (const invalid_argument& e) {
-                cerr << "Invalid input for write query. Please enter valid integers." << endl;
-            }
+            cin >> action >> source >> destination;
+            graph->writePath(source,destination);
         } else if (query == "stop") {
-            return EXIT_SUCCESS;
+            delete graph;
+            return 0;
         } else {
             cout << "Invalid query. Please use 'find', 'write', or 'stop'." << endl;
         }

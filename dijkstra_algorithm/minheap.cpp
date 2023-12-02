@@ -8,10 +8,15 @@ MinHeap::MinHeap() {
     keys = nullptr;
     values = nullptr;
 }
+MinHeap::~MinHeap() {
+    // Delete keys and values
+    delete[] keys;
+    delete[] values;
+}
 
 void MinHeap::init(int newSize) {
     // Set capacity and size
-    capacity = newSize +1;
+    capacity = newSize;
     this->size = 0;
 
     // Allocate memory for keys (weights) and values (nodes)
@@ -28,12 +33,12 @@ void MinHeap::push(double key, int value) {
     size++;
 
     // Set key and value at the end with the index as size - 1
-    int index = size - 1;
+    int index = size;
     keys[index] = key;
     values[index] = value;
 
     // Heapify up
-    heapifyUp(size - 1);
+    heapifyUp(index);
 }
 
 
@@ -47,8 +52,7 @@ int MinHeap::pop() {
     // Get root value
     int rootValue = values[1];
     // Replace root with the last element
-    keys[1] = keys[size];
-    values[1] = values[size];
+    swap(1, size);
     // Decrease size
     size--;
     // Heapify down
@@ -74,9 +78,10 @@ void MinHeap::heapifyUp(int index) {
 
 void MinHeap::heapifyDown(int index) {
     // Find the smallest child from left (2*index) or right (2*index+1) child of index
+     int smallestChild = index;
     int leftChild = index * 2;
     int rightChild = index * 2 + 1;
-    int smallestChild = index;
+   
 
     if (leftChild <= size && keys[leftChild] < keys[smallestChild]) {
         smallestChild = leftChild;
@@ -99,14 +104,14 @@ void MinHeap::heapifyDown(int index) {
     }
 }
 
-void MinHeap::swap(int i, int j) {
+void MinHeap::swap(int i, int k) {
     // Swap keys and values at positions i and j
     double tempKey = keys[i];
     int tempValue = values[i];
+    keys[i] = keys[k];
+    keys[k] = tempKey;
 
-    keys[i] = keys[j];
-    values[i] = values[j];
+    values[i] = values[k];
+    values[k] = tempValue;
 
-    keys[j] = tempKey;
-    values[j] = tempValue;
 }

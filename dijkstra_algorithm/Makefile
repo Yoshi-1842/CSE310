@@ -5,8 +5,6 @@ main.o :main.cpp
 clean :
 	rm *.o MAIN
 
-
-
 # Compiler
 CXX = g++
 
