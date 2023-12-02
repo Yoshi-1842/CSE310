@@ -4,6 +4,7 @@
 class MinHeap {
 public:
     MinHeap();
+    ~MinHeap();
     void init(int size);  // Initialize the min-heap with a given size
     void push(double key, int value);
     int pop();

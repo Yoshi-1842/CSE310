@@ -40,7 +40,7 @@ bool Graph::loadGraph(const string& filename, const string& direction) {
 
     // Check if the file is successfully opened
     if (!file.is_open()) {
-        cerr << "Failed to open the graph file." << endl;
+        cout << "Failed to open the graph file." << endl;
         return false;
     }
 
@@ -49,7 +49,7 @@ bool Graph::loadGraph(const string& filename, const string& direction) {
     getline(file, line);
 
     if(line.empty()){
-        cout << "Empty file." << endl;
+        cout << "Input file is empty." << endl;
         return false;
     }
 
@@ -75,7 +75,7 @@ bool Graph::loadGraph(const string& filename, const string& direction) {
             relaxedVertices[i] = -1;
         }
     } else {
-        cerr << "Invalid format for the first line in the input file." << endl;
+                cout << "Invalid format for the first line in the input file." << endl;
         return false;
     }
 
@@ -85,7 +85,7 @@ bool Graph::loadGraph(const string& filename, const string& direction) {
 
     // Check if the file is successfully reopened
     if (!file.is_open()) {
-        cerr << "Failed to reopen the graph file." << endl;
+        cout << "Failed to reopen the graph file." << endl;
         return false;
     }
 
@@ -105,7 +105,7 @@ while (getline(file, line)) {
 
         // Check if node IDs are valid
         if (startNode > numVertices || endNode > numVertices || startNode < 1 || endNode < 1) {
-            cerr << "Invalid node IDs in the input file." << endl;
+           cout << "Invalid node IDs in the input file." << endl;
             return false;
         }
 
@@ -133,7 +133,7 @@ while (getline(file, line)) {
             reverseEdge->destination = startNode;
             reverseEdge->weight = weight;
 
-            if(adjacencyLists[endNode] == nullptr){
+            if (adjacencyLists[endNode] == nullptr) {
                 adjacencyLists[endNode] = new Edge[numEdges];
             }
 
@@ -149,7 +149,7 @@ while (getline(file, line)) {
 
         delete edge;
     }else{
-        cout << "Invalid format for an edge in the input file." << endl;
+        cout << "Invalid format for edge in the input file." << endl;
         return false;
     }
 }
@@ -164,9 +164,9 @@ while (getline(file, line)) {
 
 void Graph::runDijkstra(int newSource, int destination, int flag) {
     int n = numVertices;
-    int source = newSource;
-    bool graphTraversed = true;
-    bool fullTraversal = true;
+    source = newSource;
+    graphTraversed = true;
+    fullTraversal = true;
 
     // Create arrays and data structures for Dijkstra's algorithm
     bool* extracted = new bool[n];
@@ -181,6 +181,7 @@ void Graph::runDijkstra(int newSource, int destination, int flag) {
     // Mark the source as extracted
     extracted[source] = true;
 
+    //MinHeap data structure
     minHeap.init(n);
     distance[source] = 0;
     minHeap.push(0, source);
@@ -258,13 +259,13 @@ void Graph::runDijkstra(int newSource, int destination, int flag) {
 void Graph::writePath(int s, int d) {
     // Check if the graph has been traversed
     if (!graphTraversed) {
-        printf("Error: graph has not been traversed yet.\n");
+        printf("Error: no path computation done\n");
         return;
     }
 
     // Check for valid source-destination pair
     if (s != source || d < 1 || d >= numVertices) {
-        printf("Error: invalid source-destination pair.\n");
+        printf("Error: invalid source destination pair\n");
         return;
     }
 
@@ -328,7 +329,7 @@ void Graph::writePath(int s, int d) {
     }
     // Case 3: No s-d path computed, and no min-heap operations were printed
     else if (!fullTraversal) {
-        printf("No %d-%d path has been computed.\n", s, d);
+        printf("No %d-%d path has been computed, yet.\n", s, d);
     }
     // Case 4: Entire graph has been traversed, and d is not in extracted or relaxed
     else {
@@ -356,7 +357,7 @@ void Graph::printAdjacencyLists() {
         }
 
         // Print the predecessor value for the current vertex
-        cout << "Predecessor: " << predecessor[v] << endl;
+        cout << "Predecessor: " << predecessor[v];
         cout << endl;
     }
 }

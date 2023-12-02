@@ -41,6 +41,10 @@ private:
     double* distance;           // Dynamic array for distances
 
     MinHeap minHeap;
+
+    void initializeArrays();
+    void relax(int u, int v, double weight, int flag);
+    void printPath(int destination);
 };
 
 #endif
